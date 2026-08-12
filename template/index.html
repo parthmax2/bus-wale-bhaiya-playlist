@@ -13,7 +13,10 @@
 <body>
 
   <div class="stage" id="stage" data-bg="{{ url_for('static', filename='images/bus.jpeg') }}">
-    <h1 class="title" id="title">बस वाले भइया</h1>
+    <div class="title-block">
+      <h1 class="title" id="title">बस वाले भइया</h1>
+      <div class="subtitle">playlist</div>
+    </div>
 
     <div class="player-wrap">
       <button id="horn-btn" class="horn-btn" data-sound1="{{ url_for('static', filename='audio/horn1.mp3') }}" data-sound2="{{ url_for('static', filename='audio/horn2.mp3') }}">हॉर्न</button>

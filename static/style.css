@@ -4,10 +4,15 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #000;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
 }
 
@@ -15,6 +20,7 @@ body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -23,7 +29,14 @@ body {
   align-items: center;
   justify-content: flex-start;
   padding-top: clamp(10px, 2vh, 30px);
-  gap: clamp(28px, 6vh, 64px);
+  gap: clamp(20px, 5vh, 64px);
+}
+
+.title-block {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -35,6 +48,30 @@ body {
   font-weight: 800;
   letter-spacing: 1px;
   color: #fff;
+}
+
+.subtitle {
+  position: absolute;
+  right: clamp(2%, 6%, 10%);
+  bottom: clamp(-28px, -5vw, -18px);
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.6rem, 4.25vw, 2.5rem);
+  font-weight: 700;
+  color: #2e2a26;
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(250, 244, 230, 0.95),
+    rgba(250, 244, 230, 0.95) 6px,
+    rgba(240, 232, 212, 0.95) 6px,
+    rgba(240, 232, 212, 0.95) 7px
+  );
+  padding: 3px 22px 10px;
+  transform: rotate(-4deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  clip-path: polygon(
+    2% 15%, 8% 0%, 25% 8%, 40% 0%, 58% 10%, 74% 2%, 90% 8%, 100% 0%,
+    98% 85%, 92% 100%, 76% 90%, 60% 100%, 42% 88%, 26% 100%, 10% 92%, 0% 100%
+  );
 }
 
 .letter {
@@ -150,7 +187,7 @@ body {
   align-items: center;
   gap: 18px;
   width: min(94vw, 900px);
-  margin-top: clamp(120px, 34vh, 380px);
+  margin-top: clamp(90px, 30vh, 380px);
 }
 
 .player-bar {
@@ -362,6 +399,82 @@ input[type="range"]::-moz-range-thumb {
 @media (max-width: 480px) {
   .bar-time {
     display: none;
+  }
+
+  .stage {
+    padding-top: clamp(36px, 8vh, 70px);
+  }
+
+  .player-wrap {
+    margin-top: clamp(160px, 40vh, 340px);
+    gap: 12px;
+  }
+
+  .subtitle {
+    bottom: -34px;
+    font-size: 1.3rem;
+    padding: 2px 16px 7px;
+  }
+
+  .player-bar {
+    gap: 8px;
+    min-height: 76px;
+    padding: 12px 14px;
+    border-radius: 22px;
+  }
+
+  .bar-art {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  .bar-seek {
+    margin: 0;
+  }
+
+  .bar-transport {
+    gap: 2px;
+  }
+
+  .bar-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .bar-btn-play {
+    width: 44px;
+    height: 44px;
+  }
+
+  .bar-icon-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .track-panel {
+    max-height: 55vh;
+  }
+
+  .title {
+    font-size: clamp(2rem, 10vw, 3.2rem);
+  }
+
+  .horn-btn {
+    padding: 6px 20px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .player-bar {
+    gap: 6px;
+    padding: 10px 10px;
+  }
+
+  .bar-art {
+    width: 38px;
+    height: 38px;
   }
 }
 
