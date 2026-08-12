@@ -41,7 +41,16 @@ playLetters();
 const hornSounds = [new Audio(hornBtn.dataset.sound1), new Audio(hornBtn.dataset.sound2)];
 let lastHorn = -1;
 
+let activeHorn = null;
+
 hornBtn.addEventListener('click', () => {
+  if (activeHorn && !activeHorn.paused) {
+    activeHorn.pause();
+    activeHorn.currentTime = 0;
+    activeHorn = null;
+    return;
+  }
+
   hornBtn.classList.remove('honk');
   void hornBtn.offsetWidth;
   hornBtn.classList.add('honk');
@@ -54,6 +63,10 @@ hornBtn.addEventListener('click', () => {
   const sound = hornSounds[pick];
   sound.currentTime = 0;
   sound.play();
+  activeHorn = sound;
+  sound.addEventListener('ended', () => {
+    if (activeHorn === sound) activeHorn = null;
+  }, { once: true });
 });
 
 const audio = document.getElementById('audio');
