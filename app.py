@@ -26,5 +26,10 @@ def index():
     return render_template("index.html", tracks_json=json.dumps(tracks, ensure_ascii=False))
 
 
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(app.static_folder, "favicon.ico")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
