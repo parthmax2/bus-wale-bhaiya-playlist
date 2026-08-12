@@ -84,6 +84,10 @@ const trackList = document.getElementById('track-list');
 const trackCount = document.getElementById('track-count');
 
 barArt.style.setProperty('--bar-art-img', `url('${barArt.dataset.art}')`);
+barArt.style.cursor = 'pointer';
+barArt.addEventListener('click', () => {
+  window.location.href = 'about.html';
+});
 
 const ICON_PLAY = 'M7 5l12 7-12 7z';
 const ICON_PAUSE = 'M6 5h4v14H6zM14 5h4v14h-4z';

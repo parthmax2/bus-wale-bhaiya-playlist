@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f2efe8;
+  color: #1a1210;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.about-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px 60px;
+}
+
+.about-back {
+  align-self: flex-start;
+  color: #6b5f55;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  transition: color 0.15s ease;
+}
+
+.about-back:hover {
+  color: #1a1210;
+}
+
+.about-wrap {
+  position: relative;
+  width: min(760px, 100%);
+  padding: 20px 8px 0;
+}
+
+.about-bgnum {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Baloo 2', 'Segoe UI', sans-serif;
+  font-size: clamp(4.5rem, 16vw, 9rem);
+  font-weight: 800;
+  color: rgba(255, 122, 92, 0.14);
+  letter-spacing: -2px;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.about-topicon {
+  position: relative;
+  display: block;
+  margin: 0 auto 18px;
+  opacity: 0.75;
+  z-index: 1;
+}
+
+.about-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.about-cardphoto {
+  display: flex;
+  justify-content: center;
+}
+
+.about-card-inner {
+  position: relative;
+  width: 200px;
+  padding: 16px 16px 22px;
+  background: #fdfcf9;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(26, 18, 16, 0.18);
+  transform: rotate(-4deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.about-card-num {
+  align-self: flex-start;
+  font-family: 'Baloo 2', 'Segoe UI', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #ff7a5c;
+  letter-spacing: 0.05em;
+}
+
+.about-card-num-bottom {
+  align-self: flex-end;
+}
+
+.about-card-photo {
+  width: 100%;
+  aspect-ratio: 3 / 3.4;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffb46b 0%, #ff7a5c 45%, #7a2f3a 100%);
+}
+
+.about-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.about-signature {
+  font-family: 'Caveat', cursive;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #7a2f2a;
+  transform: rotate(-2deg);
+}
+
+.about-info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.about-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Baloo 2', 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1a1210;
+  margin-bottom: 10px;
+}
+
+.about-section h2 svg {
+  color: #ff7a5c;
+  flex-shrink: 0;
+}
+
+.about-section dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  row-gap: 6px;
+  font-size: 0.9rem;
+}
+
+.about-section dt {
+  font-weight: 700;
+  color: #4a4038;
+  white-space: nowrap;
+}
+
+.about-section dd {
+  color: #1a1210;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.about-tags span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: rgba(255, 122, 92, 0.12);
+  color: #b8462f;
+  border: 1px solid rgba(255, 122, 92, 0.25);
+}
+
+.about-timeline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0;
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1.5px solid #1a1210;
+}
+
+.about-tl-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 12px;
+}
+
+.about-tl-year {
+  font-family: 'Baloo 2', 'Segoe UI', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.about-tl-desc {
+  font-size: 0.75rem;
+  color: #4a4038;
+  line-height: 1.4;
+}
+
+.about-links {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.about-links a {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a1210;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #1a1210;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.about-links a:hover {
+  background: #1a1210;
+  color: #fdfcf9;
+  transform: translateY(-2px);
+}
+
+.about-trivia {
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #6b5f55;
+  max-width: 52ch;
+}
+
+@media (max-width: 620px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .about-section dl {
+    justify-content: center;
+  }
+
+  .about-timeline {
+    flex-direction: column;
+    gap: 14px;
+  }
+}

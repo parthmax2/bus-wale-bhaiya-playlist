@@ -3,16 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>बस वाले भइया</title>
+  <title>बस वाले भइया Playlist – Bus Wale Bhaiya, Bus Driver & Salon Gaane</title>
+  <meta name="description" content="बस वाले भइया Playlist — bus wale playlist, bus driver playlist aur delux salon jaisi trending bus wala playlist ke purane Bollywood gaane. Raju mistri style old hits free mein sunen, seek karein aur horn bajayein.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ site_url }}/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="बस वाले भइया Playlist – Bus Wale Bhaiya & Bus Driver Gaane">
+  <meta property="og:description" content="Bus wale playlist, bus driver playlist aur delux salon bus wala playlist jaise trending purane gaane — free mein sunen aur horn bajayein.">
+  <meta property="og:url" content="{{ site_url }}/">
+  <meta property="og:image" content="{{ site_url }}{{ url_for('static', filename='images/bus.jpeg') }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="बस वाले भइया Playlist – Bus Wale Bhaiya & Bus Driver Gaane">
+  <meta name="twitter:description" content="Bus wale playlist, bus driver playlist aur delux salon bus wala playlist jaise trending purane gaane — free mein sunen aur horn bajayein.">
+  <meta name="twitter:image" content="{{ site_url }}{{ url_for('static', filename='images/bus.jpeg') }}">
+
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicPlaylist",
+    "name": "बस वाले भइया Playlist",
+    "description": "Bus wale playlist, bus driver playlist aur delux salon bus wala playlist jaise trending purane Bollywood gaane.",
+    "url": "{{ site_url }}/",
+    "numTracks": {{ tracks|length }},
+    "track": [
+      {% for t in tracks -%}
+      { "@type": "MusicRecording", "name": {{ t.title|tojson }}, "position": {{ loop.index }} }{{ "," if not loop.last }}
+      {% endfor -%}
+    ]
+  }
+  </script>
 </head>
 <body>
 
   <div class="stage" id="stage" data-bg="{{ url_for('static', filename='images/bus.jpeg') }}">
+    <img class="sr-only" src="{{ url_for('static', filename='images/bus.jpeg') }}" alt="बस वाले भइया bus wale bhaiya bus driver playlist bus at sunset">
+
+    <section class="sr-only">
+      <p>
+        बस वाले भइया Playlist — ek nostalgic bus wale playlist jo bus driver
+        playlist, bus wala playlist, aur delux salon bus wala playlist jaisi
+        trending playlists ke fan hain unke liye bani hai. Yeh raju mistri
+        style purane Bollywood gaane, jo bus mein aksar bajte hain, free mein
+        seedhe browser mein sun sakte hain — seek kar sakte hain, agla/pichla
+        track badal sakte hain, aur bus ka horn bhi bajaa sakte hain.
+      </p>
+      <h2>Full Tracklist</h2>
+      <ol>
+        {% for t in tracks %}
+        <li>{{ t.title }}</li>
+        {% endfor %}
+      </ol>
+    </section>
+
     <div class="title-block">
       <h1 class="title" id="title">बस वाले भइया</h1>
       <div class="subtitle">playlist</div>
