@@ -12,7 +12,7 @@ TRACKS_DIR = Path(app.static_folder) / "audio" / "tracks"
 def load_tracks():
     tracks = []
     for path in sorted(TRACKS_DIR.glob("*.mp3")):
-        title = re.sub(r"^\d+\s*", "", path.stem)
+        title = re.sub(r"^\d+-?", "", path.stem).replace("-", " ")
         tracks.append({
             "title": title,
             "src": url_for("static", filename=f"audio/tracks/{path.name}"),
