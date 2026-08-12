@@ -2,7 +2,7 @@ import json
 import re
 from pathlib import Path
 
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, send_from_directory
 
 app = Flask(__name__, template_folder="template", static_folder="static")
 

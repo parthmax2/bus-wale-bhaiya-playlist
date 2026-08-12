@@ -20,6 +20,7 @@ def build():
     PUBLIC_DIR.mkdir()
 
     shutil.copytree(ROOT / "static", PUBLIC_DIR / "static")
+    shutil.copy(ROOT / "static" / "favicon.ico", PUBLIC_DIR / "favicon.ico")
 
     with app.test_request_context():
         tracks = load_tracks()
