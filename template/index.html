@@ -42,8 +42,14 @@
 </head>
 <body>
 
-  <div class="stage" id="stage" data-bg="{{ url_for('static', filename='images/bus.jpeg') }}">
+  <div class="stage" id="stage" data-bg="{{ url_for('static', filename='images/bus2.webp') }}" data-bg-mobile="{{ url_for('static', filename='images/bus-mobile.webp') }}">
+    <div class="stage-bg-alt" id="stage-bg-alt" data-bg="{{ url_for('static', filename='images/bus.jpeg') }}" data-bg-mobile="{{ url_for('static', filename='images/bus-mobile2.webp') }}"></div>
     <img class="sr-only" src="{{ url_for('static', filename='images/bus.jpeg') }}" alt="बस वाले भइया bus wale bhaiya bus driver playlist bus at sunset">
+
+    <button id="view-toggle" class="view-toggle" aria-label="Switch to bus view" aria-pressed="false" title="Switch view">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 5c-5 0-9.27 3.11-11 7.5 1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 8.11 17 5 12 5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+      <span class="view-toggle-label" id="view-toggle-label">Bus view</span>
+    </button>
 
     <section class="sr-only">
       <p>
@@ -79,16 +85,25 @@
       </div>
 
       <div class="player-bar" id="player-pill">
-        <div class="bar-art" id="bar-art" data-art="{{ url_for('static', filename='images/driver.jpeg') }}"></div>
+        <div
+          class="bar-art"
+          id="bar-art"
+          data-arts="{{ url_for('static', filename='images/driver.jpeg') }},{{ url_for('static', filename='images/driver2.jpeg') }}"
+          data-hrefs="about.html,about-tartendu.html"
+          role="link"
+          tabindex="0"
+          aria-label="Meet the drivers"
+        ></div>
 
         <div class="bar-meta">
           <span id="track-title" class="bar-title">Track</span>
           <span id="track-index" class="bar-subtitle">Bus Wale Bhaiya</span>
         </div>
 
-        <input type="range" id="seek-bar" class="bar-seek" min="0" max="100" step="0.1" value="0">
-
-        <div class="bar-time" id="bar-time">0:00 / 0:00</div>
+        <div class="bar-progress">
+          <input type="range" id="seek-bar" class="bar-seek" min="0" max="100" step="0.1" value="0">
+          <div class="bar-time" id="bar-time">0:00 / 0:00</div>
+        </div>
 
         <div class="bar-transport">
           <button id="prev-btn" class="bar-btn" aria-label="Previous">
@@ -110,7 +125,13 @@
 
     <audio id="audio"></audio>
 
-    <a id="gh-badge" class="gh-badge" href="https://github.com/parthmax2" target="_blank" rel="noopener noreferrer" aria-label="parthmax2 on GitHub" title="My GitHub Profile">
+    <a id="gh-badge-2" class="gh-badge gh-badge-secondary" href="https://github.com/tartendu" data-gh-user="tartendu" target="_blank" rel="noopener noreferrer" aria-label="tartendu on GitHub" title="parthmax x tartendu">
+      <img src="https://github.com/tartendu.png" alt="tartendu" />
+    </a>
+
+    <span id="gh-badge-x" class="gh-badge-x" aria-hidden="true">&times;</span>
+
+    <a id="gh-badge" class="gh-badge" href="https://github.com/parthmax2" data-gh-user="parthmax2" target="_blank" rel="noopener noreferrer" aria-label="parthmax2 on GitHub" title="My GitHub Profile">
       <img id="gh-badge-img" src="https://github.com/parthmax2.png" alt="parthmax2" />
     </a>
 

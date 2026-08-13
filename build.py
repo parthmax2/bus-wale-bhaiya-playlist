@@ -38,6 +38,10 @@ def build():
         about_html = app.jinja_env.get_template("about.html").render()
     (PUBLIC_DIR / "about.html").write_text(about_html, encoding="utf-8")
 
+    with app.test_request_context():
+        about_tartendu_html = app.jinja_env.get_template("about-tartendu.html").render()
+    (PUBLIC_DIR / "about-tartendu.html").write_text(about_tartendu_html, encoding="utf-8")
+
     sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>

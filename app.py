@@ -37,6 +37,11 @@ def about():
     return render_template("about.html")
 
 
+@app.route("/about-tartendu.html")
+def about_tartendu():
+    return render_template("about-tartendu.html")
+
+
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory(app.static_folder, "favicon.ico")

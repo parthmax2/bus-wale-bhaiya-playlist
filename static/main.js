@@ -1,5 +1,31 @@
 const stage = document.getElementById('stage');
-stage.style.backgroundImage = `url('${stage.dataset.bg}')`;
+const stageBgAlt = document.getElementById('stage-bg-alt');
+const mobileQuery = window.matchMedia('(max-width: 640px)');
+
+function applyResponsiveBg(el) {
+  const src = (mobileQuery.matches && el.dataset.bgMobile) ? el.dataset.bgMobile : el.dataset.bg;
+  el.style.backgroundImage = `url('${src}')`;
+}
+
+applyResponsiveBg(stage);
+applyResponsiveBg(stageBgAlt);
+mobileQuery.addEventListener('change', () => {
+  applyResponsiveBg(stage);
+  applyResponsiveBg(stageBgAlt);
+});
+
+const viewToggle = document.getElementById('view-toggle');
+const viewToggleLabel = document.getElementById('view-toggle-label');
+let busView = false;
+
+viewToggle.addEventListener('click', () => {
+  busView = !busView;
+  stageBgAlt.classList.toggle('is-active', busView);
+  stage.classList.toggle('bus-view', busView);
+  viewToggle.setAttribute('aria-pressed', String(busView));
+  viewToggle.setAttribute('aria-label', busView ? "Switch to driver's view" : 'Switch to bus view');
+  viewToggleLabel.textContent = busView ? 'Driver view' : 'Bus view';
+});
 
 const title = document.getElementById('title');
 const hornBtn = document.getElementById('horn-btn');
@@ -83,10 +109,30 @@ const trackPanel = document.getElementById('track-panel');
 const trackList = document.getElementById('track-list');
 const trackCount = document.getElementById('track-count');
 
-barArt.style.setProperty('--bar-art-img', `url('${barArt.dataset.art}')`);
-barArt.style.cursor = 'pointer';
+const barArtImgs = barArt.dataset.arts.split(',');
+const barArtHrefs = barArt.dataset.hrefs.split(',');
+let barArtIndex = 0;
+let barArtDisplayedIndex = 0;
+
+function cycleBarArt() {
+  barArt.classList.remove('bar-art-swap');
+  void barArt.offsetWidth;
+  barArt.classList.add('bar-art-swap');
+  setTimeout(() => {
+    barArt.style.setProperty('--bar-art-img', `url('${barArtImgs[barArtIndex]}')`);
+    barArtDisplayedIndex = barArtIndex;
+    barArtIndex = (barArtIndex + 1) % barArtImgs.length;
+  }, 220);
+}
+
 barArt.addEventListener('click', () => {
-  window.location.href = 'about.html';
+  window.location.href = barArtHrefs[barArtDisplayedIndex];
+});
+barArt.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    window.location.href = barArtHrefs[barArtDisplayedIndex];
+  }
 });
 
 const ICON_PLAY = 'M7 5l12 7-12 7z';
@@ -134,6 +180,7 @@ function loadTrack(index, autoplay) {
   updateSeekTrack(0);
   barTime.textContent = `0:00 / 0:00`;
   setActiveRow();
+  cycleBarArt();
   if (autoplay) {
     audio.play();
   } else {
@@ -226,10 +273,13 @@ buildTrackPanel();
 loadTrack(0, false);
 
 const ghBadge = document.getElementById('gh-badge');
+const ghBadge2 = document.getElementById('gh-badge-2');
 const ghReveal = document.getElementById('gh-reveal');
 const ghCloneWrap = document.getElementById('gh-reveal-clone');
 const ghReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const ghRevealImg = document.getElementById('gh-reveal-img');
+const ghRevealCardImg = document.getElementById('gh-reveal-card-img');
 const ghNameEl = document.getElementById('gh-reveal-name');
 const ghHandleEl = document.getElementById('gh-reveal-handle');
 const ghBioEl = document.getElementById('gh-reveal-bio');
@@ -239,6 +289,7 @@ const ghFollowingEl = document.getElementById('gh-stat-following');
 
 let ghAnimating = false;
 let ghAudioCtx = null;
+const ghDataCache = {};
 
 function getGhAudioCtx() {
   if (!ghAudioCtx) {
@@ -314,87 +365,123 @@ function ghPlayChime() {
   });
 }
 
-fetch('https://api.github.com/users/parthmax2')
-  .then((r) => (r.ok ? r.json() : null))
-  .then((data) => {
-    if (!data) return;
-    ghNameEl.textContent = data.name || data.login;
-    ghHandleEl.textContent = `@${data.login}`;
-    ghBioEl.textContent = data.bio || '';
-    ghBioEl.style.display = data.bio ? '' : 'none';
-    ghReposEl.textContent = data.public_repos ?? '–';
-    ghFollowersEl.textContent = data.followers ?? '–';
-    ghFollowingEl.textContent = data.following ?? '–';
-  })
-  .catch(() => {});
+function fetchGhUser(username) {
+  if (ghDataCache[username]) return Promise.resolve(ghDataCache[username]);
+  return fetch(`https://api.github.com/users/${username}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((data) => {
+      if (data) ghDataCache[username] = data;
+      return data;
+    })
+    .catch(() => null);
+}
 
-ghBadge.addEventListener('click', (e) => {
-  if (ghAnimating) {
-    e.preventDefault();
+function renderGhData(data, fallbackUsername) {
+  if (!data) {
+    ghNameEl.textContent = fallbackUsername;
+    ghHandleEl.textContent = `@${fallbackUsername}`;
+    ghBioEl.textContent = '';
+    ghBioEl.style.display = 'none';
+    ghReposEl.textContent = '–';
+    ghFollowersEl.textContent = '–';
+    ghFollowingEl.textContent = '–';
     return;
   }
-  e.preventDefault();
-  ghAnimating = true;
+  ghNameEl.textContent = data.name || data.login;
+  ghHandleEl.textContent = `@${data.login}`;
+  ghBioEl.textContent = data.bio || '';
+  ghBioEl.style.display = data.bio ? '' : 'none';
+  ghReposEl.textContent = data.public_repos ?? '–';
+  ghFollowersEl.textContent = data.followers ?? '–';
+  ghFollowingEl.textContent = data.following ?? '–';
+}
 
-  const profileUrl = ghBadge.href;
-  getGhAudioCtx();
-  ghPlayPop();
+[ghBadge, ghBadge2].forEach((badge) => {
+  if (!badge) return;
+  fetchGhUser(badge.dataset.ghUser);
+});
 
-  const finish = () => {
-    ghReveal.classList.remove('is-active', 'is-closing');
-    ghReveal.setAttribute('aria-hidden', 'true');
-    ghCloneWrap.classList.remove('gh-fly', 'gh-fly-hide');
-    ghBadge.classList.remove('gh-hide');
-    ghAnimating = false;
-    const newTab = window.open(profileUrl, '_blank');
-    if (!newTab) {
-      window.location.href = profileUrl;
+function initGhBadge(badge) {
+  if (!badge) return;
+  badge.addEventListener('click', (e) => {
+    if (ghAnimating) {
+      e.preventDefault();
+      return;
     }
-  };
+    e.preventDefault();
+    ghAnimating = true;
 
-  if (ghReduceMotion) {
-    ghReveal.classList.add('is-active');
+    const profileUrl = badge.href;
+    const username = badge.dataset.ghUser;
+    const avatarSrc = badge.querySelector('img').src;
+    getGhAudioCtx();
+    ghPlayPop();
+
+    ghRevealImg.src = avatarSrc;
+    ghRevealCardImg.src = avatarSrc;
+    ghRevealCardImg.alt = username;
+    renderGhData(ghDataCache[username], username);
+    fetchGhUser(username).then((data) => renderGhData(data, username));
+
+    const finish = () => {
+      ghReveal.classList.remove('is-active', 'is-closing');
+      ghReveal.setAttribute('aria-hidden', 'true');
+      ghCloneWrap.classList.remove('gh-fly', 'gh-fly-hide');
+      badge.classList.remove('gh-hide');
+      ghAnimating = false;
+      const newTab = window.open(profileUrl, '_blank');
+      if (!newTab) {
+        window.location.href = profileUrl;
+      }
+    };
+
+    if (ghReduceMotion) {
+      ghReveal.classList.add('is-active');
+      ghReveal.setAttribute('aria-hidden', 'false');
+      setTimeout(() => {
+        ghReveal.classList.add('is-closing');
+        setTimeout(finish, 250);
+      }, 500);
+      return;
+    }
+
+    badge.classList.add('gh-pop');
+    setTimeout(() => badge.classList.remove('gh-pop'), 300);
+
+    const rect = badge.getBoundingClientRect();
+    const size = rect.width;
+    ghCloneWrap.style.width = `${size}px`;
+    ghCloneWrap.style.height = `${size}px`;
+    ghCloneWrap.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
+
     ghReveal.setAttribute('aria-hidden', 'false');
+    ghReveal.classList.add('is-active');
+    badge.classList.add('gh-hide');
+
+    requestAnimationFrame(() => {
+      ghCloneWrap.classList.add('gh-fly');
+      ghPlayWhoosh();
+      const targetX = window.innerWidth / 2 - size / 2;
+      const targetY = window.innerHeight / 2 - size / 2 - 90;
+      const scale = 1.5;
+      ghCloneWrap.style.transform = `translate(${targetX}px, ${targetY}px) scale(${scale}) rotate(340deg)`;
+    });
+
+    setTimeout(() => {
+      ghCloneWrap.classList.add('gh-fly-hide');
+    }, 650);
+
+    setTimeout(() => {
+      ghPlayChime();
+    }, 750);
+
     setTimeout(() => {
       ghReveal.classList.add('is-closing');
-      setTimeout(finish, 250);
-    }, 500);
-    return;
-  }
+    }, 2700);
 
-  ghBadge.classList.add('gh-pop');
-  setTimeout(() => ghBadge.classList.remove('gh-pop'), 300);
-
-  const rect = ghBadge.getBoundingClientRect();
-  const size = rect.width;
-  ghCloneWrap.style.width = `${size}px`;
-  ghCloneWrap.style.height = `${size}px`;
-  ghCloneWrap.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
-
-  ghReveal.setAttribute('aria-hidden', 'false');
-  ghReveal.classList.add('is-active');
-  ghBadge.classList.add('gh-hide');
-
-  requestAnimationFrame(() => {
-    ghCloneWrap.classList.add('gh-fly');
-    ghPlayWhoosh();
-    const targetX = window.innerWidth / 2 - size / 2;
-    const targetY = window.innerHeight / 2 - size / 2 - 90;
-    const scale = 1.5;
-    ghCloneWrap.style.transform = `translate(${targetX}px, ${targetY}px) scale(${scale}) rotate(340deg)`;
+    setTimeout(finish, 3000);
   });
+}
 
-  setTimeout(() => {
-    ghCloneWrap.classList.add('gh-fly-hide');
-  }, 650);
-
-  setTimeout(() => {
-    ghPlayChime();
-  }, 750);
-
-  setTimeout(() => {
-    ghReveal.classList.add('is-closing');
-  }, 2700);
-
-  setTimeout(finish, 3000);
-});
+initGhBadge(ghBadge);
+initGhBadge(ghBadge2);
