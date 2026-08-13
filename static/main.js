@@ -14,6 +14,26 @@ mobileQuery.addEventListener('change', () => {
   applyResponsiveBg(stageBgAlt);
 });
 
+const watchCountEl = document.getElementById('watch-count');
+let watchCount = 1000 + Math.floor(Math.random() * 500);
+
+function formatWatchCount(n) {
+  return n.toLocaleString('en-US');
+}
+
+function tickWatchCount() {
+  const delta = Math.floor(Math.random() * 17) - 8;
+  watchCount = Math.min(1500, Math.max(1000, watchCount + delta));
+  watchCountEl.textContent = formatWatchCount(watchCount);
+  watchCountEl.classList.remove('bump');
+  void watchCountEl.offsetWidth;
+  watchCountEl.classList.add('bump');
+  setTimeout(tickWatchCount, 900 + Math.random() * 1400);
+}
+
+watchCountEl.textContent = formatWatchCount(watchCount);
+setTimeout(tickWatchCount, 900 + Math.random() * 1400);
+
 const viewToggle = document.getElementById('view-toggle');
 const viewToggleLabel = document.getElementById('view-toggle-label');
 let busView = false;
